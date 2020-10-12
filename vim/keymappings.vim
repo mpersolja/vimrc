@@ -54,6 +54,15 @@ noremap <Leader>dtr :put =strftime('%a, %d %b %Y %H:%M:%S %z')<CR>
 " insert <br> on ctrl-space
 inoremap <C-Space> <br><CR>
 
-" twig tags
+" blade braces
 imap \{{ {{  }}<ESC>3ha
 imap \%% {%  %}<ESC>3ha
+
+" buffer commands
+inoremap `<F11> <ESC>:w<CR>:bp<CR>
+inoremap `<F12> <ESC>:w<CR>:bn<CR>
+
+nnoremap <F10> :buffers<CR>:buffer<Space>
+nnoremap <F11> :w<CR>:bp<CR>
+nnoremap <F12> :w<CR>:bn<CR>
+nnoremap <F9> :buffers<CR>:b

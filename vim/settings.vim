@@ -25,7 +25,7 @@ set textwidth=80
 " colorscheme
 colorscheme dracula
 
-highlight ColorColumn ctermfg=11 ctermbg=236 
+highlight ColorColumn ctermfg=11 ctermbg=236
 set colorcolumn=80
 set ruler
 
@@ -38,7 +38,7 @@ set mat=3
 let g:user_emmet_mode='a' " enable all functions in all mode
 let g:user_emmet_install_global = 0
 let g:user_emmet_leader_key='<C-m>'
-autocmd FileType html,css,vue,md,php,twig EmmetInstall " enable just for html/css
+autocmd FileType html,css,vue,md,php,blade EmmetInstall " enable just for html/css
 
 
 " notes
@@ -128,9 +128,40 @@ function MyTabLine()
   let s .= '%#TabLineFill#%T'
   " right-align the label to close the current tab page
   if tabpagenr('$') > 1
-    let s .= '%=%#TabLineFill#%999Xclose'
+    let s .= '%=%#TabLineFill#%999XX'
   endif
   return s
 endfunction
 
 endif
+
+function! BufSel(pattern)
+  let bufcount = bufnr("$")
+  let currbufnr = 1
+  let nummatches = 0
+  let firstmatchingbufnr = 0
+  while currbufnr <= bufcount
+    if(bufexists(currbufnr))
+      let currbufname = bufname(currbufnr)
+      if(match(currbufname, a:pattern) > -1)
+        echo currbufnr . ": ". bufname(currbufnr)
+        let nummatches += 1
+        let firstmatchingbufnr = currbufnr
+      endif
+    endif
+    let currbufnr = currbufnr + 1
+  endwhile
+  if(nummatches == 1)
+    execute ":buffer ". firstmatchingbufnr
+  elseif(nummatches > 1)
+    let desiredbufnr = input("Enter buffer number: ")
+    if(strlen(desiredbufnr) != 0)
+      execute ":buffer ". desiredbufnr
+    endif
+  else
+    echo "No matching buffers"
+  endif
+endfunction
+
+"Bind the BufSel() function to a user-command
+command! -nargs=1 Bs :call BufSel("<args>")
